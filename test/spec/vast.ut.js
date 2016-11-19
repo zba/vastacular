@@ -140,7 +140,7 @@ describe('VAST', function() {
                         vastXML = require('fs').readFileSync(require.resolve('../helpers/vast_2.0.xml')).toString();
                         vast = new VAST(VAST.pojoFromXML(vastXML));
 
-                        result = VAST.fetch(uri, { resolveWrappers: true, maxRedirects: 10 });
+                        result = VAST.fetch(uri, { resolveWrappers: true, maxRedirects: 10, prohibitedUrls: ['stopHere'] });
                         result.then(success, failure);
                     });
 
@@ -152,7 +152,7 @@ describe('VAST', function() {
                         });
 
                         it('should call resolveWrappers() on the VAST object it creates', function() {
-                            expect(VAST.prototype.resolveWrappers).toHaveBeenCalledWith(10);
+                            expect(VAST.prototype.resolveWrappers).toHaveBeenCalledWith(10, ['stopHere']);
                             expect(VAST.prototype.resolveWrappers.calls.mostRecent().object.toPOJO()).toEqual(vast.toPOJO());
                         });
 
